@@ -24,7 +24,6 @@ model Feedback {
   service  String
   company  String
   position String
-  rating   Int      @db.SmallInt
   sentiment_score Float?
 
   @@index([email])
