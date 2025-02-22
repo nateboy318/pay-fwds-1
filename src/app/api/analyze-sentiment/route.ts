@@ -1,52 +1,49 @@
-// analyze-sentiment/route.ts
-import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
+import Sentiment from 'sentiment';
 
 interface SentimentRequest {
-  name: string;
-  email: string;
   response: string;
-  rating: number;
 }
 
-export async function POST(req: NextRequest) {
+export async function POST(request: Request) {
   try {
-    const body: SentimentRequest = await req.json();
+    // Parse request body
+    const body: SentimentRequest = await request.json();
 
-    // Validate required fields
-    if (!body.name || !body.email || !body.response || body.rating === undefined) {
+    // Validate required field
+    if (!body?.response || typeof body.response !== 'string') {
       return NextResponse.json(
-        { error: 'All fields are required' },
+        { error: 'Invalid request - response must be a string' },
         { status: 400 }
       );
     }
 
-    // Validate rating
-    if (typeof body.rating !== 'number' || body.rating < 0 || body.rating > 10) {
+    // Sanitize input
+    const cleanResponse = body.response
+      .trim()
+      .replace(/<[^>]*>?/gm, '') // Remove HTML tags
+      .substring(0, 1000); // Limit input length
+
+    // Validate content length
+    if (cleanResponse.length < 3) {
       return NextResponse.json(
-        { error: 'Invalid rating. Must be a number between 0-10' },
+        { error: 'Response must be at least 3 characters' },
         { status: 400 }
       );
     }
 
-    // Validate email format
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(body.email)) {
-      return NextResponse.json(
-        { error: 'Invalid email format' },
-        { status: 400 }
-      );
-    }
+    // Analyze sentiment
+    const sentiment = new Sentiment();
+    const result = sentiment.analyze(cleanResponse);
 
-    // Calculate sentiment (threshold at 6)
-    const isPositive = body.rating >= 6;
+    // Return boolean based on sentiment score
+    return NextResponse.json(result.score > 0);
 
-    // Return only the boolean value
-    return NextResponse.json(isPositive);
-
-  } catch {
+  } catch (error) {
+    console.error('Sentiment analysis error:', error);
     return NextResponse.json(
-      { error: 'Invalid JSON format' },
-      { status: 400 }
+      { error: 'Internal Server Error' },
+      { status: 500 }
     );
   }
 }

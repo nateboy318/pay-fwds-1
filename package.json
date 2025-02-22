@@ -11,9 +11,11 @@
   "dependencies": {
     "@prisma/client": "^6.4.1",
     "@types/cors": "^2.8.17",
+    "@types/sentiment": "^5.0.4",
     "next": "^15.1.7",
     "react": "^19.0.0",
-    "react-dom": "^19.0.0"
+    "react-dom": "^19.0.0",
+    "sentiment": "^5.0.2"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
