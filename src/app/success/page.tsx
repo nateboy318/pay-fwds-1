@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 import confetti from 'canvas-confetti';
-import { FaFacebook, FaGoogle, FaClipboard } from 'react-icons/fa';
+import { FaFacebook, FaGoogle, FaClipboard, FaEdit, FaSave } from 'react-icons/fa';
 
 export default function Success() {
   const searchParams = useSearchParams();
@@ -13,6 +13,8 @@ export default function Success() {
   const [company, setCompany] = useState('');
   const [generatedReview, setGeneratedReview] = useState('');
   const [isGenerating, setIsGenerating] = useState(true);
+  const [isEditing, setIsEditing] = useState(false);
+  const [editedReview, setEditedReview] = useState('');
 
   useEffect(() => {
     const feedbackValue = searchParams.get('feedback') || '';
@@ -93,6 +95,16 @@ export default function Success() {
     });
   };
 
+  const handleEdit = () => {
+    setIsEditing(true);
+    setEditedReview(generatedReview);
+  };
+
+  const handleSave = () => {
+    setGeneratedReview(editedReview);
+    setIsEditing(false);
+  };
+
   return (
     <div className="min-h-screen bg-white p-4 sm:p-8 flex items-center justify-center">
       <main className="max-w-xl w-full text-center">
@@ -103,14 +115,32 @@ export default function Success() {
           {isGenerating ? (
             <div className="flex items-center justify-center">
               <div className="animate-spin rounded-full h-6 w-6 sm:h-8 sm:w-8 border-b-2 border-brand1"></div>
-              <span className="ml-2 sm:ml-3">Generating your review...</span>
+              <span className="ml-2 sm:ml-3 text-gray-700">Generating your review...</span>
             </div>
           ) : (
-            <div className='text-left '>
-              <h2 className="text-lg sm:text-xl text-left font-semibold text-gray-700 mb-3 sm:mb-4 ">We Built A Review Based On Your Feedback:</h2>
-              <p className="text-base sm:text-lg text-gray-700 text-left leading-relaxed">
-                "{generatedReview}"
-              </p>
+            <div className='text-left'>
+              <div className="flex justify-between items-center mb-3 sm:mb-4">
+                <h2 className="text-lg sm:text-xl font-semibold text-gray-700">
+                  We Built A Review Based On Your Feedback:
+                </h2>
+                <button
+                  onClick={isEditing ? handleSave : handleEdit}
+                  className="flex items-center gap-2 text-brand1 hover:text-blue-600"
+                >
+                  {isEditing ? <FaSave size={18} /> : <FaEdit size={18} />}
+                </button>
+              </div>
+              {isEditing ? (
+                <textarea
+                  value={editedReview}
+                  onChange={(e) => setEditedReview(e.target.value)}
+                  className="w-full p-2 border border-gray-300 rounded text-base sm:text-lg text-gray-700 leading-relaxed min-h-[150px]"
+                />
+              ) : (
+                <p className="text-base sm:text-lg text-gray-700 leading-relaxed">
+                  "{generatedReview}"
+                </p>
+              )}
             </div>
           )}
         </div>

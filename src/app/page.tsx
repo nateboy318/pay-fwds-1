@@ -2,6 +2,7 @@
 
 import { useState, FormEvent } from 'react';
 import { useRouter } from 'next/navigation';
+import Image from 'next/image';
 
 interface FormData {
   firstName: string;
@@ -76,8 +77,18 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-white p-4 sm:p-8 pt-20 sm:pt-36">
-      <main className="max-w-lg mx-auto bg-white shadow-xl text-black rounded-none outline-none p-4 sm:p-6">
-        <h1 className="text-3xl sm:text-4xl font-semibold mb-6 sm:mb-8 text-left text-gray-800">Help The Next You!</h1>
+      <main className="max-w-lg mx-auto bg-white shadow-xl text-black rounded-none outline-none p-4 sm:p-6 border-2 border-gray-100">
+        <div className="flex sm:flex-row flex-col justify-between items-start sm:items-center mb-6 sm:mb-8 border-b-2 border-gray-100 pb-4">
+          <Image
+            src="/logo_blue.webp"
+            alt="Company Logo"
+            width={140}
+            height={40}
+            className="h-10 w-auto sm:mb-0 mb-4"
+            priority
+          />
+          <h1 className="text-xl sm:text-2xl font-semibold text-gray-800">Give Us Your Feedback!</h1>
+        </div>
         
         <form onSubmit={handleSubmit}>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
