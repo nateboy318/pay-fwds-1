@@ -1,5 +1,5 @@
 "use client";
-
+import { Suspense } from "react";
 import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import confetti from "canvas-confetti";
@@ -11,7 +11,7 @@ import {
   FaSave,
 } from "react-icons/fa";
 
-export default function Success() {
+function SuccessContent() {
   const searchParams = useSearchParams();
   
   const [generatedReview, setGeneratedReview] = useState("");
@@ -193,5 +193,13 @@ export default function Success() {
         </div>
       </main>
     </div>
+  );
+}
+
+export default function Success() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <SuccessContent />
+    </Suspense>
   );
 }
