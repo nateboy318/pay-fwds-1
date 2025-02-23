@@ -13,10 +13,7 @@ import {
 
 export default function Success() {
   const searchParams = useSearchParams();
-  const [feedback, setFeedback] = useState("");
-  const [service, setService] = useState("");
-  const [position, setPosition] = useState("");
-  const [company, setCompany] = useState("");
+  
   const [generatedReview, setGeneratedReview] = useState("");
   const [isGenerating, setIsGenerating] = useState(true);
   const [isEditing, setIsEditing] = useState(false);
@@ -28,10 +25,7 @@ export default function Success() {
     const positionValue = searchParams.get("position") || "";
     const companyValue = searchParams.get("company") || "";
 
-    setFeedback(feedbackValue);
-    setService(serviceValue);
-    setPosition(positionValue);
-    setCompany(companyValue);
+
 
     // Generate review with the actual values, not the state
     generateReview({
