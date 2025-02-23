@@ -14,7 +14,7 @@ export default {
         brand1: "#3A92E8",
       },
       fontFamily: {
-        sans: ['Poppins', 'sans-serif'],
+        sans: ["Poppins", "sans-serif"],
       },
     },
   },

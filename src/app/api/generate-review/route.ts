@@ -1,5 +1,5 @@
-import { NextResponse } from 'next/server';
-import OpenAI from 'openai';
+import { NextResponse } from "next/server";
+import OpenAI from "openai";
 
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
@@ -23,8 +23,8 @@ Guidelines:
 Example tone (but use your own words):
 "As a [role] at [company], PayFWDs [service] has been fantastic because [benefit]."`;
 
-    console.log('Request Data:', { position, company, feedback, service });
-    console.log('Generated Prompt:', prompt);
+    console.log("Request Data:", { position, company, feedback, service });
+    console.log("Generated Prompt:", prompt);
 
     const completion = await openai.chat.completions.create({
       messages: [{ role: "user", content: prompt }],
@@ -32,14 +32,14 @@ Example tone (but use your own words):
     });
 
     const generatedReview = completion.choices[0].message.content;
-    console.log('AI Response:', generatedReview);
+    console.log("AI Response:", generatedReview);
 
     return NextResponse.json({ review: generatedReview });
   } catch (error) {
-    console.error('Error generating review:', error);
+    console.error("Error generating review:", error);
     return NextResponse.json(
-      { error: 'Failed to generate review' },
-      { status: 500 }
+      { error: "Failed to generate review" },
+      { status: 500 },
     );
   }
 }

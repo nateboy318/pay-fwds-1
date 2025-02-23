@@ -1,5 +1,5 @@
-import { NextResponse } from 'next/server';
-import { PrismaClient } from '@prisma/client';
+import { NextResponse } from "next/server";
+import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
@@ -8,13 +8,13 @@ export async function POST(request: Request) {
     const formData = await request.json();
 
     // Construct the absolute URL for the sentiment analysis API
-    const url = new URL('/api/analyze-sentiment', request.url);
+    const url = new URL("/api/analyze-sentiment", request.url);
 
     // Analyze sentiment
     const sentimentResponse = await fetch(url.toString(), {
-      method: 'POST',
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
       body: JSON.stringify({ response: formData.feedback }),
     });
@@ -37,7 +37,10 @@ export async function POST(request: Request) {
 
     return NextResponse.json({ success: true, feedback });
   } catch (error) {
-    console.error('Error saving feedback:', error);
-    return NextResponse.json({ error: 'Failed to save feedback' }, { status: 500 });
+    console.error("Error saving feedback:", error);
+    return NextResponse.json(
+      { error: "Failed to save feedback" },
+      { status: 500 },
+    );
   }
-} 
+}

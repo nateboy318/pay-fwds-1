@@ -1,5 +1,5 @@
-import Image from 'next/image';
-import Link from 'next/link';
+import Image from "next/image";
+import Link from "next/link";
 
 export default function Navbar() {
   return (
@@ -16,27 +16,48 @@ export default function Navbar() {
               priority
             />
           </div>
-          
+
           <div className="hidden md:flex space-x-8 font-bold text-xs">
-            <Link href="/" className="text-white hover:text-gray-200 transition-colors">
+            <Link
+              href="/"
+              className="text-white hover:text-gray-200 transition-colors"
+            >
               HOME
             </Link>
-            <Link href="/about" className="text-white hover:text-gray-200 transition-colors">
+            <Link
+              href="/about"
+              className="text-white hover:text-gray-200 transition-colors"
+            >
               ABOUT US
             </Link>
-            <Link href="/services" className="text-white hover:text-gray-200 transition-colors">
+            <Link
+              href="/services"
+              className="text-white hover:text-gray-200 transition-colors"
+            >
               SERVICES
             </Link>
-            <Link href="/partners" className="text-white hover:text-gray-200 transition-colors">
+            <Link
+              href="/partners"
+              className="text-white hover:text-gray-200 transition-colors"
+            >
               PARTNERS
             </Link>
-            <Link href="/resources" className="text-white hover:text-gray-200 transition-colors">
+            <Link
+              href="/resources"
+              className="text-white hover:text-gray-200 transition-colors"
+            >
               RESOURCES
             </Link>
-            <Link href="/news" className="text-white hover:text-gray-200 transition-colors">
+            <Link
+              href="/news"
+              className="text-white hover:text-gray-200 transition-colors"
+            >
               NEWS
             </Link>
-            <Link href="/contact" className="text-white hover:text-gray-200 transition-colors">
+            <Link
+              href="/contact"
+              className="text-white hover:text-gray-200 transition-colors"
+            >
               CONTACT US
             </Link>
           </div>
@@ -44,4 +65,4 @@ export default function Navbar() {
       </div>
     </nav>
   );
-} 
+}

@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
-import { useState, FormEvent } from 'react';
-import { useRouter } from 'next/navigation';
-import Image from 'next/image';
+import { useState, FormEvent } from "react";
+import { useRouter } from "next/navigation";
+import Image from "next/image";
 
 interface FormData {
   firstName: string;
@@ -11,67 +11,71 @@ interface FormData {
   company: string;
   service: string;
   feedback: string;
-
 }
 
 export default function Home() {
   const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [formData, setFormData] = useState<FormData>({
-    firstName: '',
-    email: '',
-    position: '',
-    company: '',
-    service: '',
-    feedback: '',
-
+    firstName: "",
+    email: "",
+    position: "",
+    company: "",
+    service: "",
+    feedback: "",
   });
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
-  
+
     try {
       // Analyze sentiment
-      const sentimentResponse = await fetch('/api/analyze-sentiment', {
-        method: 'POST',
+      const sentimentResponse = await fetch("/api/analyze-sentiment", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({ response: formData.feedback }),
       });
-  
+
       const sentimentData = await sentimentResponse.json();
-  
+
       // Save feedback to the database regardless of sentiment
-      await fetch('/api/submit-feedback', {
-        method: 'POST',
+      await fetch("/api/submit-feedback", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify(formData),
       });
-  
+
       // Redirect to the sorry page if feedback is negative
       if (!sentimentData.isPositive) {
-        router.push('/sorry');
+        router.push("/sorry");
         return;
       }
-  
-      router.push(`/success?service=${formData.service}&feedback=${encodeURIComponent(formData.feedback)}&position=${encodeURIComponent(formData.position)}&company=${encodeURIComponent(formData.company)}`);
+
+      router.push(
+        `/success?service=${formData.service}&feedback=${encodeURIComponent(formData.feedback)}&position=${encodeURIComponent(formData.position)}&company=${encodeURIComponent(formData.company)}`,
+      );
     } catch (error) {
-      console.error('Error submitting feedback:', error);
-      alert('Error submitting feedback. Please try again.');
+      console.error("Error submitting feedback:", error);
+      alert("Error submitting feedback. Please try again.");
     } finally {
       setIsSubmitting(false);
     }
   };
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+  const handleInputChange = (
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+    >,
+  ) => {
     const { id, value } = e.target;
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      [id]: value
+      [id]: value,
     }));
   };
 
@@ -87,13 +91,20 @@ export default function Home() {
             className="h-10 w-auto sm:mb-0 mb-4"
             priority
           />
-          <h1 className="text-xl sm:text-2xl font-semibold text-gray-800">Give Us Your Feedback!</h1>
+          <h1 className="text-xl sm:text-2xl font-semibold text-gray-800">
+            Give Us Your Feedback!
+          </h1>
         </div>
-        
+
         <form onSubmit={handleSubmit}>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
             <div className="space-y-1">
-              <label htmlFor="firstName" className="block text-sm font-semibold text-gray-700">First Name</label>
+              <label
+                htmlFor="firstName"
+                className="block text-sm font-semibold text-gray-700"
+              >
+                First Name
+              </label>
               <input
                 type="text"
                 id="firstName"
@@ -103,9 +114,14 @@ export default function Home() {
                 required
               />
             </div>
-            
+
             <div className="space-y-1">
-              <label htmlFor="email" className="block text-sm font-semibold text-gray-700">Email</label>
+              <label
+                htmlFor="email"
+                className="block text-sm font-semibold text-gray-700"
+              >
+                Email
+              </label>
               <input
                 type="email"
                 id="email"
@@ -115,9 +131,14 @@ export default function Home() {
                 required
               />
             </div>
-            
+
             <div className="space-y-1">
-              <label htmlFor="position" className="block text-sm font-semibold text-gray-700">Position</label>
+              <label
+                htmlFor="position"
+                className="block text-sm font-semibold text-gray-700"
+              >
+                Position
+              </label>
               <input
                 type="text"
                 id="position"
@@ -127,9 +148,14 @@ export default function Home() {
                 required
               />
             </div>
-            
+
             <div className="space-y-1">
-              <label htmlFor="company" className="block text-sm font-semibold text-gray-700">Company Name</label>
+              <label
+                htmlFor="company"
+                className="block text-sm font-semibold text-gray-700"
+              >
+                Company Name
+              </label>
               <input
                 type="text"
                 id="company"
@@ -142,7 +168,12 @@ export default function Home() {
           </div>
 
           <div className="space-y-1 mb-6">
-            <label htmlFor="service" className="block text-sm font-semibold text-gray-700">Service you are providing feedback on</label>
+            <label
+              htmlFor="service"
+              className="block text-sm font-semibold text-gray-700"
+            >
+              Service you are providing feedback on
+            </label>
             <select
               id="service"
               value={formData.service}
@@ -152,12 +183,16 @@ export default function Home() {
             >
               <option value="">Select a service</option>
               <option value="irs-reporting">IRS Reporting</option>
-              <option value="automated-tax-withholding">Automated Tax Withholding</option>
+              <option value="automated-tax-withholding">
+                Automated Tax Withholding
+              </option>
               <option value="ach">ACH</option>
               <option value="pay-cards">Pay Cards</option>
               <option value="onboarding">Onboarding</option>
               <option value="schoox">Schoox</option>
-              <option value="certification-tracking">Certification Tracking</option>
+              <option value="certification-tracking">
+                Certification Tracking
+              </option>
               <option value="w2-generation">W2 Generation</option>
               <option value="dedicated-rep">Dedicated Rep</option>
               <option value="job-costing">Job Costing</option>
@@ -175,13 +210,20 @@ export default function Home() {
               <option value="pay-as-you-go">Pay As You Go</option>
               <option value="poster-elite">Poster Elite</option>
               <option value="mineral">Mineral</option>
-              <option value="implementation-system-building">Implementation/System Building</option>
+              <option value="implementation-system-building">
+                Implementation/System Building
+              </option>
               <option value="applicant-tracking">Applicant Tracking</option>
             </select>
           </div>
 
           <div className="space-y-1 mb-6">
-            <label htmlFor="feedback" className="block text-sm font-semibold text-gray-700">Why do you like/dislike this service?</label>
+            <label
+              htmlFor="feedback"
+              className="block text-sm font-semibold text-gray-700"
+            >
+              Why do you like/dislike this service?
+            </label>
             <textarea
               id="feedback"
               rows={3}
@@ -192,14 +234,12 @@ export default function Home() {
             ></textarea>
           </div>
 
-          
-
-          <button 
+          <button
             type="submit"
             disabled={isSubmitting}
             className="w-full bg-brand1 text-white py-4 sm:py-3 px-6 rounded-none outline-none font-semibold hover:bg-blue-400 transition-colors text-base disabled:opacity-50"
           >
-            {isSubmitting ? 'Submitting...' : 'Submit Feedback'}
+            {isSubmitting ? "Submitting..." : "Submit Feedback"}
           </button>
         </form>
       </main>
